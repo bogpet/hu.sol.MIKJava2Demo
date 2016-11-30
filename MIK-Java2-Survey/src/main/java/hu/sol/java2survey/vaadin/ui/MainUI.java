@@ -15,7 +15,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 import hu.sol.java2survey.bean.Student;
-import hu.sol.java2survey.service.StudentService;
+import hu.sol.java2survey.service.SurveyService;
 
 @SpringUI(path = "/main")
 @Theme("reindeer")
@@ -28,7 +28,7 @@ public class MainUI extends UI {
 	private List<Student> studentList;
 
 	@Autowired
-	private StudentService studentService;
+	private SurveyService studentService;
 
 	private BeanContainer<Long, Student> studentTableDataSource;
 
@@ -39,7 +39,6 @@ public class MainUI extends UI {
 			this.pageLayout = this.setPageLayout();
 			this.setContent(this.pageLayout);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
