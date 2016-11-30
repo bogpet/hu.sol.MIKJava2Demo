@@ -23,7 +23,7 @@ public class SignUpApiImpl implements SignUpApi {
 	private SurveyService surveyService;
 
 	@Override
-	@RequestMapping(value = "/sign", method = RequestMethod.GET)
+	@RequestMapping(value = "/sign", method = RequestMethod.POST)
 	public ResponseEntity<HttpStatus> signUp(@RequestParam("name") String name, @RequestParam("email") String email,
 			@RequestParam("subjectId") String subjectId) {
 
@@ -42,10 +42,10 @@ public class SignUpApiImpl implements SignUpApi {
 	public ResponseEntity<List<Subject>> getSubjects() {
 		try {
 			List<Subject> subjects = this.surveyService.getSubjects();
-			return new ResponseEntity<List<Subject>>(subjects, HttpStatus.OK);
+			return new ResponseEntity<>(subjects, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<List<Subject>>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}
