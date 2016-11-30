@@ -25,6 +25,7 @@ public class StudentDaoImpl implements StudentDao {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<Student> listAll() {
 		return this.entityManager.createQuery("SELECT t FROM Student t").getResultList();
 	}
