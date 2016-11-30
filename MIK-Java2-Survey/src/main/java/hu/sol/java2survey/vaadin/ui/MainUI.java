@@ -6,18 +6,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.util.BeanContainer;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
+import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 import hu.sol.java2survey.bean.Student;
 import hu.sol.java2survey.service.SurveyService;
+import hu.sol.java2survey.vaadin.view.NameListView;
+import hu.sol.java2survey.vaadin.view.NotExistingView;
+import hu.sol.java2survey.vaadin.view.StatisticView;
 
-@SpringUI(path = "/main")
+@SpringUI
 @Theme("reindeer")
 public class MainUI extends UI {
 
@@ -27,8 +34,12 @@ public class MainUI extends UI {
 
 	private List<Student> studentList;
 
+	private Navigator navigator;
+
 	@Autowired
-	private SurveyService studentService;
+	private SpringViewProvider viewProvider;
+	@Autowired
+	private SurveyService surveyService;
 
 	private BeanContainer<Long, Student> studentTableDataSource;
 
@@ -36,31 +47,40 @@ public class MainUI extends UI {
 	protected void init(VaadinRequest request) {
 		try {
 			this.loadFromDao();
-			this.pageLayout = this.setPageLayout();
-			this.setContent(this.pageLayout);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Notification.show("Hiba az adatbázisban", Notification.Type.ERROR_MESSAGE);
+		} finally {
+			this.setContent(this.pageLayout);
+		}
+		this.pageLayout = new VerticalLayout();
+
+		MenuBar menu = new MenuBar();
+		menu.setWidth("100%");
+		menu.addItem("Névsor", e -> this.getNavigator().navigateTo(NameListView.VIEW_NAME));
+		menu.addItem("Statisztika", e -> this.navigator.navigateTo(StatisticView.VIEW_NAME));
+
+		CssLayout contentLayout = new CssLayout();
+		contentLayout.setSizeFull();
+		this.pageLayout.addComponents(menu, contentLayout);
+		this.pageLayout.setSizeFull();
+		this.pageLayout.setExpandRatio(contentLayout, 1.0f);
+		this.setContent(this.pageLayout);
+
+		this.navigator = new Navigator(this, contentLayout);
+
+		this.navigator.setErrorView(NotExistingView.class);
+		this.navigator.addProvider(this.viewProvider);
+
+		if ("".equals(this.navigator.getState())) {
+			this.navigator.navigateTo(NameListView.VIEW_NAME);
+		} else {
+			this.navigator.navigateTo(this.navigator.getState());
 		}
 
 	}
 
 	private void loadFromDao() throws Exception {
-		this.studentList = this.studentService.listAllStudent();
-	}
-
-	private VerticalLayout setPageLayout() {
-		VerticalLayout pageLayout = new VerticalLayout();
-		pageLayout.setSizeFull();
-		pageLayout.setMargin(true);
-
-		TabSheet pageTabSheet = new TabSheet();
-		pageTabSheet.setSizeFull();
-
-		pageTabSheet.addTab(this.createTableTab());
-		pageTabSheet.addTab(this.createStatisticTab());
-
-		pageLayout.addComponent(pageTabSheet);
-		return pageLayout;
+		this.studentList = this.surveyService.listAllStudent();
 	}
 
 	private Component createStatisticTab() {
