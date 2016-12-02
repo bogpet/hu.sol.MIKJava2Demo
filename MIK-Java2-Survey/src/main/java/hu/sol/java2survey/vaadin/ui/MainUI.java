@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
-import com.vaadin.server.VaadinRequest;
+import com.vaadin.annotations.Widgetset;import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.communication.PushMode;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
@@ -20,6 +20,7 @@ import hu.sol.java2survey.vaadin.view.StatisticView;
 
 @Push(PushMode.MANUAL)
 @SpringUI
+@Widgetset("hu.sol.java2survey.vaadin.MyWidgetSet")
 @Theme("reindeer")
 public class MainUI extends UI {
 
@@ -34,7 +35,7 @@ public class MainUI extends UI {
 
 	@Override
 	protected void init(VaadinRequest request) {
-		this.setContent(this.pageLayout);
+			this.setContent(this.pageLayout);
 		this.pageLayout = new VerticalLayout();
 
 		MenuBar menu = new MenuBar();
@@ -58,8 +59,8 @@ public class MainUI extends UI {
 			this.navigator.navigateTo(NameListView.VIEW_NAME);
 		} else {
 			this.navigator.navigateTo(this.navigator.getState());
-		}
+	}
 
 	}
 
-}
+	}
