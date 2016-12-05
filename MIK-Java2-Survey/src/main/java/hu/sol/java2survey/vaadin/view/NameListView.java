@@ -30,7 +30,8 @@ public class NameListView extends Panel implements View {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		this.setSizeFull();
-		this.setContent(createTableLayout());
+		this.setContent(this.createTableLayout());
+		this.refreshStudentTableDataSource();
 	}
 
 	private Component createTableLayout() {

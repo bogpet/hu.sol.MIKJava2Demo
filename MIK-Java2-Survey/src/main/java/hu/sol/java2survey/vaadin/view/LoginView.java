@@ -29,39 +29,37 @@ public class LoginView extends LoginForm implements View {
 
 	@Override
 	protected Component createContent(TextField userNameField, PasswordField passwordField, Button loginButton) {
-		setSizeFull();
+		this.setSizeFull();
 		VerticalLayout pageLayout = new VerticalLayout();
 		pageLayout.setWidth("100%");
 		Component loginDetailsForm = createLoginDetailsForm(userNameField, passwordField, loginButton);
-		Component maintenanceMsg = createAdditionalMsgs();
+		Component maintenanceMsg = this.createAdditionalMsgs();
 		pageLayout.addComponent(maintenanceMsg);
 		pageLayout.addComponent(loginDetailsForm);
 		pageLayout.setComponentAlignment(maintenanceMsg, Alignment.MIDDLE_CENTER);
 		pageLayout.setComponentAlignment(loginDetailsForm, Alignment.MIDDLE_CENTER);
-		this.addLoginListener(createLoginListener());
+		this.addLoginListener(this.createLoginListener());
 		return pageLayout;
 	}
 
 	private LoginListener createLoginListener() {
-		return new LoginListener() {
-			@Override
-			public void onLogin(LoginEvent event) {
-				FormSender sender = new FormSender();
-				sender.setFormAction("/j_spring_security_check");
-				sender.setFormMethod(Method.POST);
-				System.out.println(event.getLoginParameter("username"));
-				System.out.println(event.getLoginParameter("password"));
-				sender.addValue("username", event.getLoginParameter("username"));
-				sender.addValue("password", event.getLoginParameter("password"));
-				sender.setFormTarget("_top");
-				sender.extend(getUI());
-				sender.submit();
-			}
+		return event -> {
+			FormSender sender = new FormSender();
+			sender.setFormAction("/j_spring_security_check");
+			sender.setFormMethod(Method.POST);
+			System.out.println(event.getLoginParameter("username"));
+			System.out.println(event.getLoginParameter("password"));
+			sender.addValue("username", event.getLoginParameter("username"));
+			sender.addValue("password", event.getLoginParameter("password"));
+			sender.setFormTarget("_top");
+			sender.extend(LoginView.this.getUI());
+			sender.submit();
 		};
 
 	}
 
-	private Component createLoginDetailsForm(TextField usernameField, PasswordField passwordField, Button loginButton) {
+	private static Component createLoginDetailsForm(TextField usernameField, PasswordField passwordField,
+			Button loginButton) {
 		FormLayout loginDetailsForm = new FormLayout();
 		loginDetailsForm.setSpacing(true);
 		loginDetailsForm.setMargin(true);
@@ -83,7 +81,7 @@ public class LoginView extends LoginForm implements View {
 	private Component createAdditionalMsgs() {
 		VerticalLayout msgLayout = new VerticalLayout();
 
-		Object springException = getUI().getSession().getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
+		Object springException = this.getUI().getSession().getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
 		if (springException instanceof org.springframework.security.authentication.BadCredentialsException) {
 			msgLayout.addComponent(new Label("Hibás felhaszálónév vagy jelszó!"));
 		}

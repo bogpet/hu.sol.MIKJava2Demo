@@ -28,43 +28,34 @@
 </head>
 
 <body>
-
-    <!-- Fixed navbar -->
-    <div class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-                <a class="navbar-brand" href="#"><b>Java2</b></a>
-            </div>
-            <!--/.nav-collapse -->
-        </div>
-    </div>
-
     <div id="headerwrap">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
                     <h1>Tanuld meg milyen a fejlesztés vállalati környezetben!</h1>
-                    <form id="signup-form" class="form-inline">
-                        <div class="form-group" style="margin-bottom:5px">
+                    <div id="form-div" class="form-inline">
+                        <div id="email-div" class="form-group" style="margin-bottom:5px">
                             <input type="email" class="form-control" id="email-input" placeholder="Adja meg az email címét!">
+                            <span id="email-span"></span>
                         </div>
-                        <div class="form-group" style="margin-bottom:5px">
+                        <div id="name-div" class="form-group" style="margin-bottom:5px">
                             <input type="text" class="form-control" id="name-input" placeholder="Adja meg a nevét!">
+                            <span id="name-span"></span>
                         </div>
-                        <div class="form-group" style="width:100%; margin-bottom:5px">
+                        <div id="subject-div" class="form-group" style="width:100%; margin-bottom:5px">
                             <select class="form-control" id="subject-select" style="width:280px">
                                 <option value="">Melyik téma érdekel?</option>
                             </select>
+                            <span id="subject-span"></span>
                         </div>
-
                         <button class="btn btn-warning btn-lg" style="margin-bottom:5px" onclick="signUp()">Jelentkezem!</button>
-                    </form>
-                    <div id='succes-div' class="text-success" style="display:none">Success</div>
+                    </div>
+                    <div id='success-div' class="text-success" style="display:none">
+                        <h2>Sikeres regisztráció!</h2>
+                    </div>
+                    <div id='fail-div' class="text-danger" style="display:none">
+                        <h2>Sikertelen regisztráció!</h2>
+                    </div>
                 </div>
                 <!-- /col-lg-6 -->
                 <div class="col-lg-6">
@@ -120,33 +111,18 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/java2.js"></script>
 
     <script>
         $(function() {
             $('.dropdown-toggle').dropdown();
-            $.getJSON('http://localhost:8888/subjects', function(result) {
+            $.getJSON('http://10.30.50.130:8888/subjects', function(result) {
                 $.each(result, function(i, obj) {
                     $('#subject-select').append(`<option value='${obj.subjectId}'>${obj.subjectName}</option>`);
                 });
             });
         });
 
-        function signUp() {
-            var student = {
-                name: $('#name-input').val(),
-                email: $('#email-input').val(),
-                subjectId: $('#subject-select').find(":selected").val()
-            }
-
-            $.ajax('http://localhost:8888/sign', {
-                type: 'POST',
-                data: JSON.stringify(student),
-                success: function(obj) {
-                    $('#signup-form').css('display', 'none');
-                },
-                crossDomain: true
-            });
-        }
     </script>
 </body>
 

@@ -21,18 +21,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-		auth.jdbcAuthentication().dataSource(dataSource)
+		auth.jdbcAuthentication().dataSource(this.dataSource)
 				.usersByUsernameQuery("select username, password, enabled from t_user where username=?")
 				.authoritiesByUsernameQuery(
-						"select u.username, r.role from t_users u inner join t_user_role r on u.user_id = r.user_id where username=?")
-				.passwordEncoder(encoder);
+						"select u.username, r.role from t_user u inner join t_user_role r on u.user_id = r.user_id where username=?")
+				.passwordEncoder(this.encoder);
 	}
 
 	// @formatter:off
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/main").hasAnyAuthority("ROLE_ADMIN")
+			.antMatchers("/").hasAnyAuthority("ROLE_ADMIN")
 			.anyRequest().permitAll()
 		.and()
 			.formLogin()
