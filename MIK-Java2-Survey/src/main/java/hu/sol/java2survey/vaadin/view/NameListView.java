@@ -1,7 +1,8 @@
 package hu.sol.java2survey.vaadin.view;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import com.vaadin.data.util.BeanContainer;
 import com.vaadin.navigator.View;
@@ -15,10 +16,11 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
 import hu.sol.java2survey.bean.Student;
+import hu.sol.java2survey.listener.NewStudentListener;
 import hu.sol.java2survey.service.SurveyService;
 
 @SpringView(name = NameListView.VIEW_NAME)
-public class NameListView extends Panel implements View {
+public class NameListView extends Panel implements View, NewStudentListener {
 	private static final long serialVersionUID = 1248237233538937001L;
 	public static final String VIEW_NAME = "nameList";
 
@@ -26,6 +28,11 @@ public class NameListView extends Panel implements View {
 	private SurveyService surveyService;
 
 	private BeanContainer<Long, Student> studentTableDataSource;
+
+	@PostConstruct
+	private void init() {
+		this.surveyService.addNewStudentListener(this);
+	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
@@ -61,7 +68,7 @@ public class NameListView extends Panel implements View {
 		return tableTabLayout;
 	}
 
-	@Scheduled(fixedDelay = 5000)
+	// @Scheduled(fixedDelay = 5000)
 	private void refreshStudentTableDataSource() {
 		try {
 			if (this.studentTableDataSource != null) {
@@ -73,6 +80,14 @@ public class NameListView extends Panel implements View {
 			}
 		} catch (Exception e) {
 			Notification.show("Hiba az adatbázis kapcsolattal", Notification.Type.WARNING_MESSAGE);
+		}
+	}
+
+	@Override
+	public void handleNewStudent(Student student) {
+		this.studentTableDataSource.addBean(student);
+		if (this.getUI() != null && this.getUI().isAttached()) {
+			this.getUI().push();
 		}
 	}
 

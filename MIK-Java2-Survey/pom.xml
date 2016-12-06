@@ -15,7 +15,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.4.2.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
@@ -51,14 +51,6 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-jta-narayana</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-jta-narayana</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>com.vaadin</groupId>
@@ -71,27 +63,24 @@
 			<version>2.1.0</version>
 		</dependency>
 
-<dependency>
-		   <groupId>org.vaadin.addon</groupId>
-		   <artifactId>jfreechartwrapper</artifactId>
-		   <version>3.0.3</version>
-		</dependency> 
 		<dependency>
-		    <groupId>jfree</groupId>
-		    <artifactId>jfreechart</artifactId>
-		    <version>1.0.13</version>
+			<groupId>org.vaadin.addon</groupId>
+			<artifactId>jfreechartwrapper</artifactId>
+			<version>3.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>jfree</groupId>
+			<artifactId>jfreechart</artifactId>
+			<version>1.0.13</version>
 		</dependency>
 	</dependencies>
-	
+
 	<repositories>
 		<repository>
-		   <id>vaadin-addons</id>
-		   <url>http://maven.vaadin.com/vaadin-addons</url>
+			<id>vaadin-addons</id>
+			<url>http://maven.vaadin.com/vaadin-addons</url>
 		</repository>
 	</repositories>
-	
-
-
 
 	<dependencyManagement>
 		<dependencies>
@@ -151,14 +140,7 @@
 						</fileset>
 					</filesets>
 				</configuration>
-			</plugin>			
+			</plugin>
 		</plugins>
 	</build>
-
-	<repositories>
-		<repository>
-			<id>vaadin-addons</id>
-			<url>http://maven.vaadin.com/vaadin-addons</url>
-		</repository>
-	</repositories>
 </project>

@@ -23,51 +23,68 @@ function isEmpty(obj) {
 }
 
 function signUp() {
-    var valid = true;
-    var name = $('#name-input').val();
-    var email = $('#email-input').val();
-    var subjectId = $('#subject-select').find(":selected").val();
-    if (jQuery.isEmptyObject(name)) {
-        $('#name-div').addClass('has-error has-feedback');
-        $('#name-span').addClass('glyphicon glyphicon-remove form-control-feedback');
-        valid = false;
-    } else {
-        $('#name-div').removeClass('has-error has-feedback');
-        $('#name-span').removeClass('glyphicon glyphicon-remove form-control-feedback');
-    }
-    if (!isValidEmail(email)) {
-        $('#email-div').addClass('has-error has-feedback');
-        $('#email-span').addClass('glyphicon glyphicon-remove form-control-feedback');
-        valid = false;
-    } else {
-        $('#email-div').removeClass('has-error has-feedback');
-        $('#email-span').removeClass('glyphicon glyphicon-remove form-control-feedback');
-    }
-    if (subjectId === "") {
-        $('#subject-div').addClass('has-error has-feedback');
-        $('#subject-span').addClass('glyphicon glyphicon-remove form-control-feedback');
-        valid = false;
-    } else {
-        $('#subject-div').removeClass('has-error has-feedback');
-        $('#subject-span').removeClass('glyphicon glyphicon-remove form-control-feedback');
-    }
-    if (valid) {
-        $.ajax('http://10.30.50.130:8888/sign', {
-            type: 'POST',
-            data: {
-                name: name,
-                email: email,
-                subjectId: subjectId
-            },
-            success: function (obj) {
-                $('#form-div').css('display', 'none');
-                $('#success-div').css('display', 'inline');
-            },
-            fail: function (obj) {
-                $('#form-div').css('display', 'none');
-                $('#fail-div').css('display', 'inline');
-            },
-            crossDomain: true
-        });
+    var registered = localStorage.getItem('java2-registered');
+    if (registered == null || jQuery.isEmptyObject(registered) || registered === 'false') {
+        var valid = true;
+        var name = $('#name-input').val();
+        var email = $('#email-input').val();
+        var subjectId = $('#subject-select').find(":selected").val();
+        if (jQuery.isEmptyObject(name)) {
+            $('#name-div').addClass('has-error has-feedback');
+            $('#name-span').addClass('glyphicon glyphicon-remove form-control-feedback');
+            valid = false;
+        } else {
+            $('#name-div').removeClass('has-error has-feedback');
+            $('#name-span').removeClass('glyphicon glyphicon-remove form-control-feedback');
+        }
+        if (!isValidEmail(email)) {
+            $('#email-div').addClass('has-error has-feedback');
+            $('#email-span').addClass('glyphicon glyphicon-remove form-control-feedback');
+            valid = false;
+        } else {
+            $('#email-div').removeClass('has-error has-feedback');
+            $('#email-span').removeClass('glyphicon glyphicon-remove form-control-feedback');
+        }
+        if (subjectId === "") {
+            $('#subject-div').addClass('has-error has-feedback');
+            $('#subject-span').addClass('glyphicon glyphicon-remove form-control-feedback');
+            valid = false;
+        } else {
+            $('#subject-div').removeClass('has-error has-feedback');
+            $('#subject-span').removeClass('glyphicon glyphicon-remove form-control-feedback');
+        }
+        if (valid) {
+            $.ajax('http://10.30.50.105:8888/sign', {
+                type: 'POST',
+                data: {
+                    name: name,
+                    email: email,
+                    subjectId: subjectId
+                },
+                success: function (obj) {
+                    $('#form-div').css('display', 'none');
+                    $('#success-div').css('display', 'inline');
+                    localStorage.setItem('java2-registered', 'true')
+                },
+                fail: function (obj) {
+                    $('#form-div').css('display', 'none');
+                    $('#fail-div').css('display', 'inline');
+                },
+                crossDomain: true
+            });
+        }
     }
 }
+
+$(function () {
+    var registered = localStorage.getItem('java2-registered');
+    if (registered === 'true') {
+        $('#form-div').css('display', 'none')
+    }
+    $('.dropdown-toggle').dropdown();
+    $.getJSON('http://10.30.50.105:8888/subjects', function (result) {
+        $.each(result, function (i, obj) {
+            $('#subject-select').append(`<option value='${obj.subjectId}'>${obj.subjectName}</option>`);
+        });
+    });
+});

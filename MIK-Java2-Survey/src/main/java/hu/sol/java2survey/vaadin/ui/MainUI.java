@@ -4,8 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Widgetset;
 import com.vaadin.navigator.Navigator;
-import com.vaadin.annotations.Widgetset;import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.communication.PushMode;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
@@ -35,13 +36,14 @@ public class MainUI extends UI {
 
 	@Override
 	protected void init(VaadinRequest request) {
-			this.setContent(this.pageLayout);
+		this.setContent(this.pageLayout);
 		this.pageLayout = new VerticalLayout();
 
 		MenuBar menu = new MenuBar();
 		menu.setWidth("100%");
 		menu.addItem("Névsor", e -> this.getNavigator().navigateTo(NameListView.VIEW_NAME));
 		menu.addItem("Statisztika", e -> this.navigator.navigateTo(StatisticView.VIEW_NAME));
+		menu.addItem("Logout", e -> logout());
 
 		CssLayout contentLayout = new CssLayout();
 		contentLayout.setSizeFull();
@@ -59,8 +61,11 @@ public class MainUI extends UI {
 			this.navigator.navigateTo(NameListView.VIEW_NAME);
 		} else {
 			this.navigator.navigateTo(this.navigator.getState());
+		}
 	}
 
+	private void logout() {
+		// TODO
 	}
 
-	}
+}

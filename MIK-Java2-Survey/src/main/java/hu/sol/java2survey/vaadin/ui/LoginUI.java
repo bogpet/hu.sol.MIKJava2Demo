@@ -26,7 +26,7 @@ public class LoginUI extends UI {
 		this.addStyleName("backColor");
 
 		Navigator navigator = new Navigator(this, this);
-		navigator.addProvider(viewProvider);
+		navigator.addProvider(this.viewProvider);
 		navigator.navigateTo(LoginView.VIEW_NAME);
 	}
 

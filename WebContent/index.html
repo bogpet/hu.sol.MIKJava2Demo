@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="assets/img/favicon.png">
 
-    <title>FLATTY - Free Bootstrap 3 Landing Page</title>
+    <title>Java2 Survey</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
@@ -112,16 +112,10 @@
     <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/java2.js"></script>
+    <script src="js/js.storage.js"></script>
 
     <script>
-        $(function() {
-            $('.dropdown-toggle').dropdown();
-            $.getJSON('http://10.30.50.130:8888/subjects', function(result) {
-                $.each(result, function(i, obj) {
-                    $('#subject-select').append(`<option value='${obj.subjectId}'>${obj.subjectName}</option>`);
-                });
-            });
-        });
+
 
     </script>
 </body>

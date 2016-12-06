@@ -21,11 +21,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-		auth.jdbcAuthentication().dataSource(this.dataSource)
+		auth.jdbcAuthentication().dataSource(dataSource)
 				.usersByUsernameQuery("select username, password, enabled from t_user where username=?")
 				.authoritiesByUsernameQuery(
 						"select u.username, r.role from t_user u inner join t_user_role r on u.user_id = r.user_id where username=?")
-				.passwordEncoder(this.encoder);
+				.passwordEncoder(encoder);
 	}
 
 	// @formatter:off
@@ -44,6 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
 		.logout().logoutSuccessUrl("/login?logout");
 		http.csrf().disable();
+		http.headers().frameOptions().sameOrigin();
 	}
 	// @formatter:on
 }
