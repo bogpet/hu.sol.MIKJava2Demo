@@ -1,6 +1,5 @@
 package hu.sol.java2survey.config;
 
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +19,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private PasswordEncoder encoder;
 
-	@PostConstruct
-	public void init() {
-		System.out.println(this.encoder.encode("admin"));
-	}
-
 	@Autowired
 	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(this.dataSource)
@@ -37,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	// @formatter:off
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/").hasAnyAuthority("ROLE_ADMIN").anyRequest().permitAll().and()
+		http.authorizeRequests().antMatchers("/main").hasAnyAuthority("ROLE_ADMIN").anyRequest().permitAll().and()
 				.formLogin().loginPage("/login").loginProcessingUrl("/j_spring_security_check")
 				.usernameParameter("username").passwordParameter("password").permitAll().and().logout()
 				.logoutSuccessUrl("/login?logout");

@@ -19,7 +19,7 @@ import hu.sol.java2survey.vaadin.view.NotExistingView;
 import hu.sol.java2survey.vaadin.view.StatisticView;
 
 @Push(PushMode.MANUAL)
-@SpringUI
+@SpringUI(path = "/main")
 @Widgetset("hu.sol.java2survey.vaadin.MyWidgetSet")
 @Theme("reindeer")
 public class MainUI extends UI {
