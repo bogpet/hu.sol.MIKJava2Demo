@@ -18,6 +18,7 @@ public class SubjectDaoImpl implements SubjectDao {
 	@Autowired
 	private EntityManager entityManager;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Subject> getSubjects() throws Exception {
 		return this.entityManager.createQuery("SELECT obj FROM Subject obj").getResultList();

@@ -22,14 +22,14 @@ public class UserRole implements GrantedAuthority {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_role_id", unique = true, nullable = false)
 	private Integer userRoleId;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "username", nullable = false)
 	private User user;
-	
+
 	@Column(name = "role", nullable = false, length = 45)
 	private String role;
-	
+
 	public UserRole() {
 	}
 
@@ -39,7 +39,7 @@ public class UserRole implements GrantedAuthority {
 	}
 
 	public Integer getUserRoleId() {
-		return userRoleId;
+		return this.userRoleId;
 	}
 
 	public void setUserRoleId(Integer userRoleId) {
@@ -47,7 +47,7 @@ public class UserRole implements GrantedAuthority {
 	}
 
 	public User getUser() {
-		return user;
+		return this.user;
 	}
 
 	public void setUser(User user) {
@@ -55,7 +55,7 @@ public class UserRole implements GrantedAuthority {
 	}
 
 	public String getRole() {
-		return role;
+		return this.role;
 	}
 
 	public void setRole(String role) {
@@ -64,7 +64,7 @@ public class UserRole implements GrantedAuthority {
 
 	@Override
 	public String getAuthority() {
-		return role;
+		return this.role;
 	}
-	
+
 }

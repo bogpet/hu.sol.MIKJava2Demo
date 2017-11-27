@@ -4,8 +4,6 @@ import org.vaadin.risto.formsender.FormSender;
 import org.vaadin.risto.formsender.widgetset.client.shared.Method;
 
 import com.vaadin.data.validator.NullValidator;
-import com.vaadin.event.Action;
-import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
@@ -24,8 +22,6 @@ import com.vaadin.ui.VerticalLayout;
 public class LoginView extends LoginForm implements View {
 	private static final long serialVersionUID = 2992502147074865800L;
 	public static final String VIEW_NAME = "login";
-
-	Action action_ok = new ShortcutAction("Default key", ShortcutAction.KeyCode.ENTER, null);
 
 	@Override
 	protected Component createContent(TextField userNameField, PasswordField passwordField, Button loginButton) {
@@ -47,15 +43,12 @@ public class LoginView extends LoginForm implements View {
 			FormSender sender = new FormSender();
 			sender.setFormAction("/j_spring_security_check");
 			sender.setFormMethod(Method.POST);
-			System.out.println(event.getLoginParameter("username"));
-			System.out.println(event.getLoginParameter("password"));
 			sender.addValue("username", event.getLoginParameter("username"));
 			sender.addValue("password", event.getLoginParameter("password"));
 			sender.setFormTarget("_top");
 			sender.extend(LoginView.this.getUI());
 			sender.submit();
 		};
-
 	}
 
 	private static Component createLoginDetailsForm(TextField usernameField, PasswordField passwordField,
@@ -91,6 +84,6 @@ public class LoginView extends LoginForm implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-	}
 
+	}
 }

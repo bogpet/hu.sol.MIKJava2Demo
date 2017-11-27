@@ -33,7 +33,7 @@ public class User implements Serializable, org.springframework.security.core.use
 	private boolean enabled;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-	private Set<UserRole> userRoles = new HashSet<UserRole>(0);
+	private Set<UserRole> userRoles = new HashSet<>(0);
 
 	public User() {
 	}
@@ -55,12 +55,12 @@ public class User implements Serializable, org.springframework.security.core.use
 
 	@Override
 	public String toString() {
-		return "User [userName=" + username + ", password=" + password + ", enabled=" + enabled + "]";
+		return "User [userName=" + this.username + ", password=" + this.password + ", enabled=" + this.enabled + "]";
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return userRoles;
+		return this.userRoles;
 	}
 
 	@Override
@@ -78,24 +78,27 @@ public class User implements Serializable, org.springframework.security.core.use
 		return true;
 	}
 
+	@Override
 	public String getUsername() {
-		return username;
+		return this.username;
 	}
 
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
+	@Override
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
+	@Override
 	public boolean isEnabled() {
-		return enabled;
+		return this.enabled;
 	}
 
 	public void setEnabled(boolean enabled) {
@@ -103,7 +106,7 @@ public class User implements Serializable, org.springframework.security.core.use
 	}
 
 	public Set<UserRole> getUserRoles() {
-		return userRoles;
+		return this.userRoles;
 	}
 
 	public void setUserRoles(Set<UserRole> userRoles) {

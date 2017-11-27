@@ -5,11 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Widgetset;
-import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.communication.PushMode;
 import com.vaadin.spring.annotation.SpringUI;
-import com.vaadin.spring.navigator.SpringViewProvider;
+import com.vaadin.spring.navigator.SpringNavigator;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.UI;
@@ -29,10 +28,8 @@ public class MainUI extends UI {
 
 	private VerticalLayout pageLayout;
 
-	private Navigator navigator;
-
 	@Autowired
-	private SpringViewProvider viewProvider;
+	private SpringNavigator navigator;
 
 	@Override
 	protected void init(VaadinRequest request) {
@@ -43,7 +40,7 @@ public class MainUI extends UI {
 		menu.setWidth("100%");
 		menu.addItem("Névsor", e -> this.getNavigator().navigateTo(NameListView.VIEW_NAME));
 		menu.addItem("Statisztika", e -> this.navigator.navigateTo(StatisticView.VIEW_NAME));
-		menu.addItem("Logout", e -> logout());
+		menu.addItem("Kijelentkezés", e -> this.logout());
 
 		CssLayout contentLayout = new CssLayout();
 		contentLayout.setSizeFull();
@@ -52,10 +49,8 @@ public class MainUI extends UI {
 		this.pageLayout.setExpandRatio(contentLayout, 1.0f);
 		this.setContent(this.pageLayout);
 
-		this.navigator = new Navigator(this, contentLayout);
-
+		this.navigator.init(this, contentLayout);
 		this.navigator.setErrorView(NotExistingView.class);
-		this.navigator.addProvider(this.viewProvider);
 
 		if ("".equals(this.navigator.getState())) {
 			this.navigator.navigateTo(NameListView.VIEW_NAME);
@@ -65,7 +60,7 @@ public class MainUI extends UI {
 	}
 
 	private void logout() {
-		// TODO
+		this.getUI().getPage().setLocation("/logout");
+		this.getUI().getSession().close();
 	}
-
 }

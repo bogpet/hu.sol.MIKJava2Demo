@@ -20,30 +20,30 @@ public class UserDaoImpl implements UserDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> listAll() {
-		return entityManager.createQuery("SELECT obj FROM User obj").getResultList();
+		return this.entityManager.createQuery("SELECT obj FROM User obj").getResultList();
 	}
 
 	@Override
 	public User findUserByName(String username) {
-		Query query = entityManager.createQuery("SELECT obj FROM User obj WHERE obj.username = :username")
+		Query query = this.entityManager.createQuery("SELECT obj FROM User obj WHERE obj.username = :username")
 				.setParameter("username", username);
 		return (User) query.getSingleResult();
 	}
 
 	@Override
 	public void saveUser(User user) {
-		entityManager.persist(user);
-		entityManager.flush();
+		this.entityManager.persist(user);
+		this.entityManager.flush();
 	}
 
 	@Override
 	public void updateUser(User user) {
-		entityManager.merge(user);
+		this.entityManager.merge(user);
 	}
 
 	@Override
 	public void deleteUser(User user) {
-		entityManager.remove(user);
+		this.entityManager.remove(user);
 	}
 
 }

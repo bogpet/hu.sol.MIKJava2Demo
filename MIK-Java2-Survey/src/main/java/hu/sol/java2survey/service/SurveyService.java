@@ -25,26 +25,26 @@ public class SurveyService {
 
 	public void saveStudent(String name, String email, String subjectId) throws Exception {
 		Student student = new Student(name, email, Integer.parseInt(subjectId));
-		studentDao.saveStudent(student);
-		for (NewStudentListener eventHandler : newStudentEventHandlers) {
+		this.studentDao.saveStudent(student);
+		for (NewStudentListener eventHandler : this.newStudentEventHandlers) {
 			eventHandler.handleNewStudent(student);
 		}
 	}
 
 	public List<Student> listAllStudent() throws Exception {
-		return studentDao.listAll();
+		return this.studentDao.listAll();
 	}
 
 	public List<Subject> getSubjects() throws Exception {
-		return subjectDao.getSubjects();
+		return this.subjectDao.getSubjects();
 	}
 
 	public void addNewStudentListener(NewStudentListener handler) {
-		newStudentEventHandlers.add(handler);
+		this.newStudentEventHandlers.add(handler);
 	}
 
 	public void removeNewStudentListener(NewStudentListener handler) {
-		newStudentEventHandlers.remove(handler);
+		this.newStudentEventHandlers.remove(handler);
 	}
 
 }
