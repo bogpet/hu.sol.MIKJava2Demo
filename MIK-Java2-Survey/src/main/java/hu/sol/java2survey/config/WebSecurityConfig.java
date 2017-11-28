@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/main").hasAnyAuthority("ROLE_ADMIN").anyRequest().permitAll().and()
-				.formLogin().loginPage("/login").loginProcessingUrl("/j_spring_security_check")
+				.formLogin().loginPage("/login").loginProcessingUrl("/j_spring_security_check").defaultSuccessUrl("/main", true)
 				.usernameParameter("username").passwordParameter("password").permitAll().and().logout()
 				.logoutSuccessUrl("/login?logout");
 		http.csrf().disable();
